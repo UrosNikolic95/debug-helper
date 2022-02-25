@@ -1,3 +1,5 @@
+import { ExceptionDataEntity } from "./exception-data.entity";
+
 export function GetAllFunctionNames(obj: any): string[] {
   const funcNames: string[] = [];
   let current = obj;
@@ -14,21 +16,35 @@ function removeDuplicates(funcNames: string[]): string[] {
   return Array.from(new Set(funcNames));
 }
 
-export function WrapSingleFunction(func: Function): Function {
+export function WrapSingleFunction(
+  func: Function,
+  class_name: string,
+  function_name: string
+): Function {
   return (...args: any[]) => {
     try {
       return func(...args);
-    } catch (err) {
-      console.log(err);
+    } catch (err1) {
+      console.log(err1);
+      try {
+        ExceptionDataEntity.save({
+          class_name,
+          function_name,
+          input_paramaters: args as unknown,
+        } as ExceptionDataEntity);
+      } catch (err2) {
+        console.log(err2);
+      }
     }
   };
 }
 
-export function WrapFunctions(obj: any): void {
+export function WrapFunctions(obj: object): void {
   const functionNames = GetAllFunctionNames(obj);
   functionNames.forEach((funcName) => {
     const func: Function = obj[funcName];
     func.bind(obj);
-    obj[funcName] = WrapSingleFunction(obj[funcName]);
+    const className = obj.constructor.name;
+    obj[funcName] = WrapSingleFunction(obj[funcName], className, funcName);
   });
 }
