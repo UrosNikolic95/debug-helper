@@ -1,0 +1,34 @@
+{
+  "name": "debug-helper",
+  "version": "0.0.1",
+  "description": "debug-helper",
+  "main": "lib/main",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
+    "pg": "^8.7.3",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.5.0",
+    "typeorm": "^0.2.44",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UrosNikolic95/debug-helper.git"
+  },
+  "author": "UrosNikolic95",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UrosNikolic95/debug-helper/issues"
+  },
+  "homepage": "https://github.com/UrosNikolic95/debug-helper#readme",
+  "types": "lib/main"
+}
