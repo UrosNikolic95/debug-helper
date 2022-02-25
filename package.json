@@ -18,7 +18,9 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx ts-node src/main.ts",
+    "pp": "npx tsc && npm version patch && npm publish",
+    "test": "jest --config jest.config.json"
   },
   "repository": {
     "type": "git",
