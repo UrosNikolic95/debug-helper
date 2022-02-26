@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { WrapFunctions } from "../src/main";
+import { WrapFunctions, GetAllFunctionNames, setEquals } from "../src/main";
 import { TestingHelper } from "../prepare-test";
 
 function sleep(milliseconds: number): Promise<void> {
@@ -32,7 +32,20 @@ test("Test 1", async () => {
   }
 
   const obj = new B();
+  const oldFuncNames = GetAllFunctionNames(obj);
+  const oldConstructorName = obj.constructor.name;
   WrapFunctions(obj);
+  const newFuncNames = GetAllFunctionNames(obj);
+  const newConstructorName = obj.constructor.name;
+
+  console.log("name comparison", oldFuncNames, newFuncNames);
+  console.log(">>>>>>>", {
+    oldFuncNames,
+    newFuncNames,
+    isEqual: setEquals(oldFuncNames, newFuncNames),
+    oldConstructorName,
+    newConstructorName,
+  });
 
   obj.func1(0, 2, 3, 45);
   console.log("field: ", obj.func2(1, 2));

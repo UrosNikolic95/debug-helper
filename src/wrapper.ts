@@ -12,6 +12,15 @@ export function GetAllFunctionNames(obj: any): string[] {
   );
 }
 
+export function isSubset<T>(arrA: T[], arrB: T[]): boolean {
+  const setB = new Set(arrB);
+  return arrA.every((el) => setB.has(el));
+}
+
+export function setEquals<T>(arrA: T[], arrB: T[]): boolean {
+  return isSubset(arrA, arrB) && arrA.length == arrB.length;
+}
+
 function removeDuplicates(funcNames: string[]): string[] {
   return Array.from(new Set(funcNames));
 }
@@ -42,14 +51,18 @@ export function WrapSingleFunction(
   class_name: string,
   function_name: string
 ): Function {
-  return (...args: any[]) => {
-    try {
-      return func(...args);
-    } catch (err1) {
-      console.log(err1);
-      MemorizeParamaters(class_name, function_name, args);
-    }
-  };
+  const funcName = function_name == "constructor" ? class_name : function_name; // preserve obj.constructor.name
+  const nameFunction = {
+    [funcName](...args: any[]) {
+      try {
+        return func(...args);
+      } catch (err1) {
+        console.log(err1);
+        MemorizeParamaters(class_name, function_name, args);
+      }
+    },
+  }[funcName]; // this is making named function in order to preserve function names
+  return nameFunction;
 }
 
 function subtractSet<T>(positive: T[], negative: T[]): T[] {
@@ -62,11 +75,11 @@ export function getFunctionsWithoutPlainObjectFunctions(obj: object): string[] {
 }
 
 export function WrapFunctions(obj: object): void {
-  const functionNames = getFunctionsWithoutPlainObjectFunctions(obj);
+  const functionNames = GetAllFunctionNames(obj);
   functionNames.forEach((funcName) => {
     const func: Function = obj[funcName];
     const binedFunc = func.bind(obj);
-    const className = Object.getPrototypeOf(obj).constructor.name;
+    const className = obj.constructor.name;
     obj[funcName] = WrapSingleFunction(binedFunc, className, funcName);
   });
 }
