@@ -36,6 +36,6 @@ test("Test 1", async () => {
 
   obj.func1(0, 2, 3, 45);
   console.log("field: ", obj.func2(1, 2));
-  await sleep(5000);
+  await sleep(5000); // racing condition fix
   await TestingHelper.close();
 }, 10000);
