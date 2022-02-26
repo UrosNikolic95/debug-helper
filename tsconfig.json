@@ -102,5 +102,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": ["test"]
+  "include": ["src"]
 }
