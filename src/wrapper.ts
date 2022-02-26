@@ -1,4 +1,3 @@
-import { getRepository } from "typeorm";
 import { ExceptionDataEntity } from "./exception-data.entity";
 
 export function GetAllFunctionNames(obj: any): string[] {
@@ -53,8 +52,17 @@ export function WrapSingleFunction(
   };
 }
 
+function subtractSet<T>(positive: T[], negative: T[]): T[] {
+  const negativeSet = new Set(negative);
+  return positive.filter((el) => !negativeSet.has(el));
+}
+
+export function getFunctionsWithoutPlainObjectFunctions(obj: object): string[] {
+  return subtractSet(GetAllFunctionNames(obj), GetAllFunctionNames({}));
+}
+
 export function WrapFunctions(obj: object): void {
-  const functionNames = GetAllFunctionNames(obj);
+  const functionNames = getFunctionsWithoutPlainObjectFunctions(obj);
   functionNames.forEach((funcName) => {
     const func: Function = obj[funcName];
     const binedFunc = func.bind(obj);

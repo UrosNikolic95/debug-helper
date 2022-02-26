@@ -32,7 +32,13 @@ test("Test 1", async () => {
   }
 
   const obj = new B();
+  console.log("a1", obj.constructor.name);
   WrapFunctions(obj);
+
+  console.log({
+    a1: obj.constructor.name, // Why does it not return name ? In other circumstances it dit.
+    a2: Object.getPrototypeOf(obj).constructor.name,
+  });
 
   obj.func1(0, 2, 3, 45);
   console.log("field: ", obj.func2(1, 2));
