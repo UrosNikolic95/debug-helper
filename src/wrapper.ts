@@ -51,9 +51,8 @@ export function WrapSingleFunction(
   class_name: string,
   function_name: string
 ): Function {
-  const funcName = function_name == "constructor" ? class_name : function_name; // preserve obj.constructor.name
   const nameFunction = {
-    [funcName](...args: any[]) {
+    [function_name](...args: any[]) {
       try {
         return func(...args);
       } catch (err1) {
@@ -61,7 +60,7 @@ export function WrapSingleFunction(
         MemorizeParamaters(class_name, function_name, args);
       }
     },
-  }[funcName]; // this is making named function in order to preserve function names
+  }[function_name]; // this is making named function in order to preserve function names
   return nameFunction;
 }
 
@@ -80,6 +79,7 @@ export function WrapFunctions(obj: object): void {
     const func: Function = obj[funcName];
     const binedFunc = func.bind(obj);
     const className = obj.constructor.name;
-    obj[funcName] = WrapSingleFunction(binedFunc, className, funcName);
+    if (funcName != "constructor")
+      obj[funcName] = WrapSingleFunction(binedFunc, className, funcName);
   });
 }
