@@ -20,4 +20,8 @@ export class TestingHelper {
     }
     return TestingHelper.connection;
   }
+
+  public static async close(): Promise<void> {
+    if (this.connection) await this.connection.close();
+  }
 }

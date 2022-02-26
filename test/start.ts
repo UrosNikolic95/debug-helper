@@ -7,7 +7,7 @@ function sleep(milliseconds: number): Promise<void> {
 }
 
 test("Test 1", async () => {
-  const connection = await TestingHelper.getConnection();
+  await TestingHelper.getConnection();
   class A {
     func1(a: unknown, b: unknown, c: unknown, d: unknown) {
       console.log("func1", a, b, c, d);
@@ -28,7 +28,8 @@ test("Test 1", async () => {
 
   obj.func1(0, 2, 3, 4);
   obj.func2(1, 2);
-
-  await sleep(10000);
-  await connection.close();
 }, 1000);
+
+afterAll(async () => {
+  await TestingHelper.close();
+}, 5000);
