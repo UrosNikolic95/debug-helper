@@ -57,8 +57,8 @@ export function WrapFunctions(obj: object): void {
   const functionNames = GetAllFunctionNames(obj);
   functionNames.forEach((funcName) => {
     const func: Function = obj[funcName];
-    func.bind(obj);
+    const binedFunc = func.bind(obj);
     const className = Object.getPrototypeOf(obj).constructor.name;
-    obj[funcName] = WrapSingleFunction(obj[funcName], className, funcName);
+    obj[funcName] = WrapSingleFunction(binedFunc, className, funcName);
   });
 }

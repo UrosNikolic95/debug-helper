@@ -36,7 +36,7 @@ test("Test 1", async () => {
 
   obj.func1(0, 2, 3, 45);
   console.log("field: ", obj.func2(1, 2));
-}, 5000);
+}, 10000);
 
 afterAll(async () => {
   await TestingHelper.close();
