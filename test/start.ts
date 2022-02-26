@@ -1,6 +1,14 @@
-import { WrapFunctions } from "../src/main";
+import "reflect-metadata";
+import { ExceptionDataEntity, WrapFunctions } from "../src/main";
+import { TestingHelper } from "../prepare-test";
+
+beforeAll(async () => {
+  await TestingHelper.getConnection();
+}, 10000);
 
 test("Test 1", async () => {
+  const connection = await TestingHelper.getConnection();
+
   class A {
     func1(a: unknown, b: unknown, c: unknown, d: unknown) {
       console.log("func1", a, b, c, d);
@@ -21,4 +29,5 @@ test("Test 1", async () => {
 
   obj.func1(0, 2, 3, 4);
   obj.func2(1, 2);
-});
+  await connection.close();
+}, 10000);

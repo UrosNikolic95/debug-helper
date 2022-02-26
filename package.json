@@ -8,6 +8,7 @@
     "test": "test"
   },
   "dependencies": {
+    "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.44"
   },
   "devDependencies": {

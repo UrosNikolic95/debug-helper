@@ -1,3 +1,4 @@
+import { getRepository } from "typeorm";
 import { ExceptionDataEntity } from "./exception-data.entity";
 
 export function GetAllFunctionNames(obj: any): string[] {
@@ -16,6 +17,23 @@ function removeDuplicates(funcNames: string[]): string[] {
   return Array.from(new Set(funcNames));
 }
 
+export async function MemorizeParamaters(
+  class_name: string,
+  function_name: string,
+  args: any
+) {
+  try {
+    await ExceptionDataEntity.findOne(); // it fixed driver not foun Error
+    await ExceptionDataEntity.save({
+      class_name,
+      function_name,
+      input_paramaters: args as unknown,
+    } as ExceptionDataEntity);
+  } catch (err2) {
+    console.log("MemorizeParamaters Error:", err2);
+  }
+}
+
 export function WrapSingleFunction(
   func: Function,
   class_name: string,
@@ -26,15 +44,7 @@ export function WrapSingleFunction(
       return func(...args);
     } catch (err1) {
       console.log(err1);
-      try {
-        ExceptionDataEntity.save({
-          class_name,
-          function_name,
-          input_paramaters: args as unknown,
-        } as ExceptionDataEntity);
-      } catch (err2) {
-        console.log(err2);
-      }
+      MemorizeParamaters(class_name, function_name, args);
     }
   };
 }
