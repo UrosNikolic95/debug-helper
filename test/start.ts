@@ -1,14 +1,13 @@
 import "reflect-metadata";
-import { ExceptionDataEntity, WrapFunctions } from "../src/main";
+import { WrapFunctions } from "../src/main";
 import { TestingHelper } from "../prepare-test";
 
-beforeAll(async () => {
-  await TestingHelper.getConnection();
-}, 10000);
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, milliseconds));
+}
 
 test("Test 1", async () => {
   const connection = await TestingHelper.getConnection();
-
   class A {
     func1(a: unknown, b: unknown, c: unknown, d: unknown) {
       console.log("func1", a, b, c, d);
@@ -29,5 +28,7 @@ test("Test 1", async () => {
 
   obj.func1(0, 2, 3, 4);
   obj.func2(1, 2);
+
+  await sleep(10000);
   await connection.close();
-}, 10000);
+}, 1000);

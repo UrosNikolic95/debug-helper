@@ -23,7 +23,11 @@ export async function MemorizeParamaters(
   args: any
 ) {
   try {
-    await ExceptionDataEntity.findOne(); // it fixed driver not foun Error
+    console.log(">>>", {
+      class_name,
+      function_name,
+      input_paramaters: args as unknown,
+    });
     await ExceptionDataEntity.save({
       class_name,
       function_name,
