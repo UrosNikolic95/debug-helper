@@ -23,11 +23,11 @@ export async function MemorizeParamaters(
   args: any
 ) {
   try {
-    console.log(">>>", {
+    console.log("MemorizeParamaters", {
       class_name,
       function_name,
       input_paramaters: args as unknown,
-    });
+    } as ExceptionDataEntity);
     await ExceptionDataEntity.save({
       class_name,
       function_name,
@@ -58,7 +58,7 @@ export function WrapFunctions(obj: object): void {
   functionNames.forEach((funcName) => {
     const func: Function = obj[funcName];
     func.bind(obj);
-    const className = obj.constructor.name;
+    const className = Object.getPrototypeOf(obj).constructor.name;
     obj[funcName] = WrapSingleFunction(obj[funcName], className, funcName);
   });
 }

@@ -1,4 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity({ name: "exception_data" })
 export class ExceptionDataEntity extends BaseEntity {
@@ -13,4 +19,7 @@ export class ExceptionDataEntity extends BaseEntity {
 
   @Column({ type: "json" })
   input_paramaters: Object;
+
+  @CreateDateColumn()
+  created_at: Date;
 }

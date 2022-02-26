@@ -1,4 +1,5 @@
 import { Connection, createConnection } from "typeorm";
+import { ExceptionDataEntity } from "../src/exception-data.entity";
 
 export class TestingHelper {
   private static connection: Connection;
