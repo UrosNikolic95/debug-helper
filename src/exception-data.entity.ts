@@ -22,4 +22,7 @@ export class ExceptionDataEntity extends BaseEntity {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column()
+  stack: string;
 }

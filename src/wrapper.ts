@@ -28,21 +28,18 @@ function removeDuplicates(funcNames: string[]): string[] {
 export async function MemorizeParamaters(
   class_name: string,
   function_name: string,
-  args: any
+  args: any,
+  stack: string
 ) {
   try {
-    console.log("MemorizeParamaters", {
-      class_name,
-      function_name,
-      input_paramaters: args as unknown,
-    } as ExceptionDataEntity);
     await ExceptionDataEntity.save({
       class_name,
       function_name,
       input_paramaters: args as unknown,
+      stack,
     } as ExceptionDataEntity);
-  } catch (err2) {
-    console.log("MemorizeParamaters Error:", err2);
+  } catch (err) {
+    console.error("MemorizeParamaters Error:", err);
   }
 }
 
@@ -55,9 +52,9 @@ export function WrapSingleFunction(
     [function_name](...args: any[]) {
       try {
         return func(...args);
-      } catch (err1) {
-        console.log(err1);
-        MemorizeParamaters(class_name, function_name, args);
+      } catch (err) {
+        console.error(err);
+        MemorizeParamaters(class_name, function_name, args, err.stack);
       }
     },
   }[function_name]; // this is making named function in order to preserve function names
